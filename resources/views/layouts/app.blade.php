@@ -51,17 +51,18 @@
     <link rel="stylesheet" href="{{ asset('kaiadmin/assets/css/bootstrap.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('kaiadmin/assets/css/plugins.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('kaiadmin/assets/css/kaiadmin.min.css') }}" />
-
-    <!-- CSS Just for demo purpose, don't include it in your project -->
-    <link rel="stylesheet" href="{{ asset('kaiadmin/assets/css/demo.css') }}" />
 </head>
 
 <body>
     <div class="wrapper">
+        @auth
         @include('layouts.sidebar')
+        @endauth
 
         <div class="main-panel">
+            @auth
             @include('layouts.navbar')
+            @endauth
 
             <div class="container">
                 <div class="page-inner">
@@ -71,13 +72,14 @@
                 </div>
             </div>
 
+            @auth
             @include('layouts.footer')
+            @endauth
         </div>
     </div>
     <!--   Core JS Files   -->
     <script src="{{ asset('kaiadmin/assets/js/core/jquery-3.7.1.min.js') }}"></script>
     <script src="{{ asset('kaiadmin/assets/js/core/popper.min.js') }}"></script>
-    <script src="{{ asset('kaiadmin/assets/js/core/bootstrap.min.js') }}"></script>
 
     <!-- jQuery Scrollbar -->
     <script src="{{ asset('kaiadmin/assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js') }}"></script>
@@ -106,34 +108,6 @@
 
     <!-- Kaiadmin JS -->
     <script src="{{ asset('kaiadmin/assets/js/kaiadmin.min.js') }}"></script>
-    <script>
-        $("#lineChart").sparkline([102, 109, 120, 99, 110, 105, 115], {
-            type: "line",
-            height: "70",
-            width: "100%",
-            lineWidth: "2",
-            lineColor: "#177dff",
-            fillColor: "rgba(23, 125, 255, 0.14)",
-        });
-
-        $("#lineChart2").sparkline([99, 125, 122, 105, 110, 124, 115], {
-            type: "line",
-            height: "70",
-            width: "100%",
-            lineWidth: "2",
-            lineColor: "#f3545d",
-            fillColor: "rgba(243, 84, 93, .14)",
-        });
-
-        $("#lineChart3").sparkline([105, 103, 123, 100, 95, 105, 115], {
-            type: "line",
-            height: "70",
-            width: "100%",
-            lineWidth: "2",
-            lineColor: "#ffa534",
-            fillColor: "rgba(255, 165, 52, .14)",
-        });
-    </script>
 
     @stack('scripts')
 </body>

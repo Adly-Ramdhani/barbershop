@@ -27,25 +27,11 @@
   <div class="sidebar-wrapper scrollbar scrollbar-inner">
     <div class="sidebar-content">
       <ul class="nav nav-secondary">
-        <li class="nav-item active">
-          <a
-            data-bs-toggle="collapse"
-            href="#dashboard"
-            class="collapsed"
-            aria-expanded="false">
-            <i class="fas fa-home"></i>
+        <li class="nav-item {{ request()->is('dashboard*') ? 'active' : '' }}">
+          <a href="#">
+            <i class="fas fa-desktop"></i>
             <p>Dashboard</p>
-            <span class="caret"></span>
           </a>
-          <div class="collapse" id="dashboard">
-            <ul class="nav nav-collapse">
-              <li>
-                <a href="../demo1/index.html">
-                  <span class="sub-item">Dashboard 1</span>
-                </a>
-              </li>
-            </ul>
-          </div>
         </li>
         <li class="nav-section">
           <span class="sidebar-mini-icon">
@@ -53,11 +39,10 @@
           </span>
           <h4 class="text-section">Components</h4>
         </li>
-        <li class="nav-item">
+        <li class="nav-item {{ request()->is('products*') ? 'active' : '' }}">
           <a href="{{ route('products.index') }}">
-            <i class="fas fa-desktop"></i>
+            <i class="fas fa-box-open"></i>
             <p>Products</p>
-            <span class="badge badge-success">4</span>
           </a>
         </li>
         <li class="nav-item">

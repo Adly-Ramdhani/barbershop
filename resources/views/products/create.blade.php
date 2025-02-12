@@ -48,7 +48,7 @@
         </div>
         <div class="card-action">
           <button type="submit" class="btn btn-success">Submit</button>
-          <button class="btn btn-danger">Cancel</button>
+          <a href="{{ route('products.index') }}" class="btn btn-danger">Cancel</a>
         </div>
       </form>
     </div>
