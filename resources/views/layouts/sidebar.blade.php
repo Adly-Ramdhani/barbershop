@@ -40,7 +40,7 @@
           <div class="collapse" id="dashboard">
             <ul class="nav nav-collapse">
               <li>
-                <a href="../demo1/index.html">
+                <a href="{{ route('home') }}">
                   <span class="sub-item">Dashboard 1</span>
                 </a>
               </li>
@@ -167,7 +167,7 @@
                 </a>
               </li>
               <li>
-                <a href="tables/datatables.html">
+                <a href="{{ route('users.index') }}">
                   <span class="sub-item">Datatables</span>
                 </a>
               </li>
