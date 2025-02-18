@@ -336,7 +336,7 @@
                 <a class="dropdown-item" href="#">My Balance</a>
                 <a class="dropdown-item" href="#">Inbox</a>
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="{{ route('users.edit', auth()->user()->id) }}">Account Setting</a>
+                <a class="dropdown-item" href="{{ route('users.edit', Auth::user()->id) }}">Account Setting</a>
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                   <i class="mdi mdi-logout text-muted fs-16 align-middle me-1"></i> <span class="align-middle" data-key="t-logout">Logout</span>
