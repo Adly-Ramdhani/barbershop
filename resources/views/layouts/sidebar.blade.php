@@ -32,6 +32,17 @@
             <i class="fas fa-desktop"></i>
             <p>Dashboard</p>
           </a>
+            <span class="caret"></span>
+          </a>
+          <div class="collapse" id="dashboard">
+            <ul class="nav nav-collapse">
+              <li>
+                <a href="{{ route('home') }}">
+                  <span class="sub-item">Dashboard 1</span>
+                </a>
+              </li>
+            </ul>
+          </div>
         </li>
         <li class="nav-section">
           <span class="sidebar-mini-icon">
@@ -152,7 +163,7 @@
                 </a>
               </li>
               <li>
-                <a href="tables/datatables.html">
+                <a href="{{ route('users.index') }}">
                   <span class="sub-item">Datatables</span>
                 </a>
               </li>
