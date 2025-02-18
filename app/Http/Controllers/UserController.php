@@ -29,7 +29,13 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        User::create($request->all());
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|string|min:8|confirmed',
+        ]);
+
+        User::create($validated);
 
         return to_route('users.index');
     }
@@ -83,10 +89,10 @@ class UserController extends Controller
     {
         try {
             $user->delete();
-            return redirect()->route('users.index')
+            return to_route('users.index')
                              ->with('success', 'User berhasil dihapus.');
         } catch (\Exception $e) {
-            return redirect()->route('users.index')
+            return to_route('users.index')
                              ->with('error', 'Gagal menghapus user: ' . $e->getMessage());
         }
     }
