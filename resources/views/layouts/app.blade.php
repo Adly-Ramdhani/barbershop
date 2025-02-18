@@ -51,17 +51,18 @@
     <link rel="stylesheet" href="{{ asset('kaiadmin/assets/css/bootstrap.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('kaiadmin/assets/css/plugins.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('kaiadmin/assets/css/kaiadmin.min.css') }}" />
-
-    <!-- CSS Just for demo purpose, don't include it in your project -->
-    <link rel="stylesheet" href="{{ asset('kaiadmin/assets/css/demo.css') }}" />
 </head>
 
 <body>
     <div class="wrapper">
+        @auth
         @include('layouts.sidebar')
+        @endauth
 
         <div class="main-panel">
+            @auth
             @include('layouts.navbar')
+            @endauth
 
             <div class="container">
                 <div class="page-inner">
@@ -71,13 +72,15 @@
                 </div>
             </div>
 
+            @auth
             @include('layouts.footer')
+            @endauth
         </div>
     </div>
      <!--   Core JS Files   -->
      <script src="{{ asset('kaiadmin/assets/js/core/jquery-3.7.1.min.js') }}"></script>
      {{-- <script src="{{ asset('kaiadmin/assets/js/core/popper.min.js') }}"></script>
-     <script src="{{ asset('kaiadmin/assets/js/core/bootstrap.min.js') }}"></script>  --}}
+     <script src="{{ asset('kaiadmin/assets/js/core/bootstrap.min.js') }}"></script>   --}}
      {{-- <script src="assets/js/core/jquery-3.7.1.min.js"></script> --}}
      <script src="assets/js/core/popper.min.js"></script>
      <script src="assets/js/core/bootstrap.min.js"></script>
@@ -114,6 +117,8 @@
      <script src="{{ asset('kaiadmin/assets/js/setting-demo.js') }}"></script>
      <script src="{{ asset('kaiadmin/assets/js/demo.js') }}"></script>
     <script>
+
+        
         $("#lineChart").sparkline([102, 109, 120, 99, 110, 105, 115], {
             type: "line",
             height: "70",

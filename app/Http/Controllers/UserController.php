@@ -55,20 +55,26 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-
         $validated = $request->validate([
             'name'  => 'string|max:255',
             'phone_number' => 'numeric|digits_between:10,15',
             'email' => 'string|email|max:255|unique:users,email,' . $user->id,
-            'password' => 'string|min:8|confirmed',
-            
+            'password' => 'nullable|string|min:8|confirmed',
         ]);
 
-        // Update instance user yang diberikan
+        // Jika password diisi, enkripsi dan tambahkan ke data yang akan diupdate
+        if ($request->filled('password')) {
+            $validated['password'] = Hash::make($request->password);
+        } else {
+            unset($validated['password']); // Hilangkan password jika kosong
+        }
+
+        // Update data user
         $user->update($validated);
 
         return to_route('users.index')->with('success', 'User berhasil diupdate.');
-   }
+    }
+
 
     /**
      * Remove the specified resource from storage.
