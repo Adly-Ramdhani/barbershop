@@ -43,7 +43,7 @@ class ServicesController extends Controller
         try {
             // Cari data berdasarkan ID
             $service = Services::findOrFail($id);
-    
+
             // Jika data ditemukan, tampilkan di view
             return view('services.show', compact('service'));
         } catch (\Exception $e) {
@@ -64,10 +64,10 @@ class ServicesController extends Controller
     //     return view('services.edit', compact('services'));
     // }
     public function edit($id)
-{
-    $service = Services::findOrFail($id); // Ambil data berdasarkan ID
-    return view('services.edit', compact('service'));
-}
+    {
+        $service = Services::findOrFail($id); // Ambil data berdasarkan ID
+        return view('services.edit', compact('service'));
+    }
 
 
     /**
@@ -80,17 +80,17 @@ class ServicesController extends Controller
                 'name' => 'required|string|max:255',
                 'description' => 'required',
             ]);
-    
+
             // Coba update data
             $service->update($validated);
-    
+
             return redirect()->route('services.index')->with('success', 'Service berhasil diupdate.');
         } catch (\Exception $e) {
             // Jika terjadi error, tangkap pesan errornya
             return redirect()->back()->with('error', 'Gagal mengupdate service: ' . $e->getMessage());
         }
     }
-    
+
 
 
     /**
@@ -101,11 +101,10 @@ class ServicesController extends Controller
         try {
             $service->delete();
             return to_route('services.index')
-                             ->with('success', 'Services berhasil dihapus.');
+                ->with('success', 'Services berhasil dihapus.');
         } catch (\Exception $e) {
             return to_route('services.index')
-                             ->with('error', 'Gagal menghapus Services: ' . $e->getMessage());
+                ->with('error', 'Gagal menghapus Services: ' . $e->getMessage());
         }
     }
 }
-
