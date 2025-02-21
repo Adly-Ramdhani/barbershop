@@ -29,15 +29,22 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|string|min:8|confirmed',
-        ]);
-
-        User::create($validated);
-
-        return to_route('users.index');
+        try {
+            $validated = $request->validate([
+                'name' => 'required|string|max:255',
+                'email' => 'required|email|unique:users,email',
+                'password' => 'required|string|min:8|confirmed',
+            ]);
+        
+            User::create($validated);
+        
+            return to_route('users.index')->with('success', 'User berhasil dibuat.');
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return back()->withErrors($e->validator)->withInput();
+        } catch (\Exception $e) {
+            return back()->with('error', 'Terjadi kesalahan saat menyimpan data: ' . $e->getMessage())->withInput();
+        }
+        
     }
 
     /**
@@ -61,24 +68,28 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        $validated = $request->validate([
-            'name'  => 'string|max:255',
-            'phone_number' => 'numeric|digits_between:10,15',
-            'email' => 'string|email|max:255|unique:users,email,' . $user->id,
-            'password' => 'nullable|string|min:8|confirmed',
-        ]);
-
-        // Jika password diisi, enkripsi dan tambahkan ke data yang akan diupdate
-        if ($request->filled('password')) {
-            $validated['password'] = Hash::make($request->password);
-        } else {
-            unset($validated['password']); // Hilangkan password jika kosong
+        try {
+            $validated = $request->validate([
+                'name'  => 'string|max:255',
+                'phone_number' => 'numeric|digits_between:10,15',
+                'email' => 'string|email|max:255|unique:users,email,' . $user->id,
+                'password' => 'nullable|string|min:8|confirmed',
+            ]);
+        
+            // Jika password diisi, enkripsi dan tambahkan ke data yang akan diupdate
+            if ($request->filled('password')) {
+                $validated['password'] = Hash::make($request->password);
+            } else {
+                unset($validated['password']); // Hilangkan password jika kosong
+            }
+        
+            // Update data user
+            $user->update($validated);
+        
+            return to_route('users.index')->with('success', 'User berhasil diupdate.');
+        } catch (Exception $e) {
+            return to_route('users.index')->with('error', 'Terjadi kesalahan saat mengupdate data: ' . $e->getMessage());
         }
-
-        // Update data user
-        $user->update($validated);
-
-        return to_route('users.index')->with('success', 'User berhasil diupdate.');
     }
 
 
@@ -89,11 +100,9 @@ class UserController extends Controller
     {
         try {
             $user->delete();
-            return to_route('users.index')
-                             ->with('success', 'User berhasil dihapus.');
+            return to_route('users.index')->with('success', 'User berhasil dihapus.');
         } catch (\Exception $e) {
-            return to_route('users.index')
-                             ->with('error', 'Gagal menghapus user: ' . $e->getMessage());
+            return to_route('users.index')->with('error', 'Gagal menghapus user: ' . $e->getMessage());
         }
     }
 }

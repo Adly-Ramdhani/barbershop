@@ -57,6 +57,12 @@
           </a>
         </li>
         <li class="nav-item">
+          <a href="{{ route('users.index') }}">
+            <i class="fas fa-table"></i>
+            <p>User </p>
+          </a>
+        </li> 
+        <li class="nav-item">
           <a data-bs-toggle="collapse" href="#base">
             <i class="fas fa-layer-group"></i>
             <p>Base</p>
@@ -148,28 +154,7 @@
               </li>
             </ul>
           </div>
-        </li>
-        <li class="nav-item">
-          <a data-bs-toggle="collapse" href="#tables">
-            <i class="fas fa-table"></i>
-            <p>Tables</p>
-            <span class="caret"></span>
-          </a>
-          <div class="collapse" id="tables">
-            <ul class="nav nav-collapse">
-              <li>
-                <a href="tables/tables.html">
-                  <span class="sub-item">Basic Table</span>
-                </a>
-              </li>
-              <li>
-                <a href="{{ route('users.index') }}">
-                  <span class="sub-item">Datatables</span>
-                </a>
-              </li>
-            </ul>
-          </div>
-        </li>
+        </li>       
         <li class="nav-item">
           <a data-bs-toggle="collapse" href="#maps">
             <i class="fas fa-map-marker-alt"></i>
