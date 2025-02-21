@@ -30,8 +30,8 @@
                 <td>{{ $servicess->name }}</td>
                 <td>{{ $servicess->description }}</td>
                 <td> 
+                <a href="{{ route('services.show', $servicess->id) }}" class="btn btn-primary btn-sm">Show</a>
                   <a href="{{ route('services.edit', $servicess->id) }}" class="btn btn-warning btn-sm">Edit</a>
-
 
                    <!-- Tombol Delete -->
                    <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteUserModal{{ $servicess->id }}">

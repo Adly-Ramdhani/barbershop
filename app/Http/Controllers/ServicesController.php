@@ -38,9 +38,21 @@ class ServicesController extends Controller
         return to_route('services.index');
     }
 
-    public function show(Services $services)
+    public function show(Services $services, $id)
     {
-        //
+        try {
+            // Cari data berdasarkan ID
+            $service = Services::findOrFail($id);
+    
+            // Jika data ditemukan, tampilkan di view
+            return view('services.show', compact('service'));
+        } catch (\Exception $e) {
+            // Jika data tidak ditemukan, redirect dengan pesan error
+            return redirect()->route('services.index')->with('error', 'Data tidak ditemukan.');
+        } catch (\Exception $e) {
+            // Tangani error lainnya
+            return redirect()->route('services.index')->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
     }
 
     /**

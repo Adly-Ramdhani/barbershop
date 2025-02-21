@@ -10,6 +10,8 @@ class Services extends Model
 {    
     use SoftDeletes; // Tambahkan ini untuk mendukung Soft Delete
 
+    protected $table = 'services';
+
     protected $fillable = [ // Gantilah $guarded dengan $fillable
         'name',
         'description',
