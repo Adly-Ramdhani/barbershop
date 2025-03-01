@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -32,20 +33,26 @@ class UserController extends Controller
         try {
             $validated = $request->validate([
                 'name' => 'required|string|max:255',
+                'phone_number' => 'required|string|max:15|unique:users,phone_number',
+                'role' => 'required|string',
                 'email' => 'required|email|unique:users,email',
                 'password' => 'required|string|min:8|confirmed',
             ]);
-        
-            User::create($validated);
-        
+
+            User::create([
+                'name' => $validated['name'],
+                'phone_number' => $validated['phone_number'],
+                'role' => $validated['role'],
+                'email' => $validated['email'],
+                'password' => Hash::make($validated['password']),
+            ]);
+
             return to_route('users.index')->with('success', 'User berhasil dibuat.');
-        } catch (\Illuminate\Validation\ValidationException $e) {
-            return back()->withErrors($e->validator)->withInput();
         } catch (\Exception $e) {
             return back()->with('error', 'Terjadi kesalahan saat menyimpan data: ' . $e->getMessage())->withInput();
         }
-        
     }
+
 
     /**
      * Display the specified resource.
