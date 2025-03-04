@@ -4,9 +4,11 @@ namespace App\Models;
 
 use App\Models\Services;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Reservations extends Model
+class Reservation extends Model
 {
+    use SoftDeletes;
     protected $guarded = [];
 
     public function services()
