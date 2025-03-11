@@ -14,13 +14,16 @@ class ServicesController extends Controller
 
     public function index()
     {
+
         $services = Services::all();
+        // dd($services); 
         return view('services.index', compact('services'));
     }
 
     public function create()
     {
-        return view('services.create');
+        $services = Services::all();
+        return view('index', compact('services'));
     }
 
     /**

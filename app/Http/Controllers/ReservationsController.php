@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Services;
 use App\Models\Reservations;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -23,10 +24,11 @@ class ReservationsController extends Controller
 
     /**
      * Show the form for creating a new resource.
-     */
+     */         
     public function create()
     {
-        //
+        $services = Services::all(); // Ambil semua data services
+        return view('index', compact('services')); // Kirim data ke view
     }
 
     /**
