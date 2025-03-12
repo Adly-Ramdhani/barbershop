@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Reservations;
+use auth;
+use App\Models\Reservation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-class ReservationsController extends Controller
+class ReservationController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,7 +15,7 @@ class ReservationsController extends Controller
     public function index()
     {
         try {
-            $reservations = Reservations::with('services')->get();
+            $reservations = Reservation::with('services')->get();
             return response()->json(['status' => 'success', 'data' => $reservations], 200);
         } catch (\Exception $e) {
             return response()->json(['status' => 'error', 'message' => $e->getMessage()], 500);
@@ -34,24 +35,32 @@ class ReservationsController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'user_id' => 'required|exists:users,id',
-            'name' => 'required|string|max:255',
-            'phone' => 'required|string|max:15',
-            'date' => 'required|date',
-            'services' => 'required|array',
-            'services.*' => 'exists:services,id'
-        ]);
-
-        DB::beginTransaction();
         try {
-            $reservationData = $request->only(['user_id', 'name', 'phone', 'date']);
+            $request->validate([
+                'name' => 'required|string|max:255',
+                'phone' => 'required|string|max:15',
+                'date' => 'required|date',
+                'services' => 'required|array',
+                'services.*' => 'exists:services,id'
+            ]);
+    
+            DB::beginTransaction();
+            
+            // Ambil user_id dari user yang sedang login
+            $user = auth()->user();
+            // dd( $user);
+            if (!$user) {
+                return response()->json(['status' => 'error', 'message' => 'User not authenticated'], 401);
+            }
+    
+            $reservationData = $request->only(['name', 'phone', 'date']);
+            $reservationData['user_id'] = $userId;
             $reservationData['status'] = 'pending';
-
-            $reservation = Reservations::create($reservationData);
-
+    
+            $reservation = Reservation::create($reservationData);
+    
             $reservation->services()->attach($request->services);
-
+    
             DB::commit();
             return response()->json(['status' => 'success', 'data' => $reservation->load('services')], 201);
         } catch (\Exception $e) {
@@ -59,6 +68,7 @@ class ReservationsController extends Controller
             return response()->json(['status' => 'error', 'message' => $e->getMessage()], 500);
         }
     }
+    
 
 
     /**
@@ -67,7 +77,7 @@ class ReservationsController extends Controller
     public function show($id)
     {
         try {
-            $reservation = Reservations::with('services')->find($id);
+            $reservation = Reservation::with('services')->find($id);
             if (!$reservation) {
                 return response()->json(['status' => 'error', 'message' => 'Reservation not found'], 404);
             }
@@ -79,7 +89,7 @@ class ReservationsController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Reservations $reservations)
+    public function edit(Reservation $reservations)
     {
         //
     }
@@ -95,12 +105,12 @@ class ReservationsController extends Controller
                 'name' => 'sometimes|string|max:255',
                 'date' => 'sometimes|date',
                 'phone' => 'sometimes|string|max:15',
-                'service_ids' => 'sometimes|array',
-                'service_ids.*' => 'exists:services,id'
+                'services' => 'required|array',
+                'services.*' => 'exists:services,id'
             ]);
     
             // Cari reservasi berdasarkan ID
-            $reservation = Reservations::find($id);
+            $reservation = Reservation::find($id);
             if (!$reservation) {
                 return response()->json(['status' => 'error', 'message' => 'Reservation not found'], 404);
             }
@@ -111,11 +121,11 @@ class ReservationsController extends Controller
             $reservation->save();
     
             // Sinkronisasi layanan jika ada perubahan
-            if ($request->has('service_ids')) {
-                $reservation->services()->sync($request->service_ids);
+            if ($request->has('services')) {
+                $reservation->services()->sync($request->services);
             }
 
-            $updatedReservation = Reservations::with('services')->find($id);
+            $updatedReservation = Reservation::with('services')->find($id);
     
 
             return response()->json(['status' => 'success', 'message' => 'Reservation updated', 'reservation' =>  $updatedReservation]);
@@ -128,15 +138,14 @@ class ReservationsController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Reservations $reservations, $id)
+    public function destroy(Reservation $reservations, $id)
     {
         try {
-            $reservation = Reservations::find($id);
+            $reservation = Reservation::find($id);
             if (!$reservation) {
                 return response()->json(['status' => 'error', 'message' => 'Reservation not found'], 404);
             }
 
-            $reservation->services()->detach(); // Hapus relasi layanan
             $reservation->delete();
 
             return response()->json(['status' => 'success', 'message' => 'Reservation deleted']);
