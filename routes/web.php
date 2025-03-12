@@ -11,7 +11,7 @@ use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\ReservationsController;
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('index');
 });
 
 Auth::routes();
@@ -30,6 +30,6 @@ Route::get('/admin', [AdminController::class, 'index'])->name('admin');
 Route::resource('products', ProductController::class);
 Route::resource('services', ServicesController::class);
 Route::resource('users', UserController::class);
-// Route::apiResource('reservations', ReservationsController::class);
+Route::Resource('reservations', ReservationsController::class);
 
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
