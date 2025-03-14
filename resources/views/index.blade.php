@@ -7,6 +7,7 @@
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
+    
 
     <!-- Favicon -->
     <link href="{{ asset('hair-salon-html-template/img/favicon.ico') }}" rel="icon">
@@ -29,6 +30,7 @@
 
     <!-- Template Stylesheet -->
     <link href="{{ asset('hair-salon-html-template/css/style.css') }}" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 </head>
 
@@ -45,7 +47,7 @@
     <!-- Navbar Start -->
     <nav class="navbar navbar-expand-lg bg-secondary navbar-dark sticky-top py-lg-0 px-lg-5 wow fadeIn" data-wow-delay="0.1s">
         <a href="index.html" class="navbar-brand ms-4 ms-lg-0">
-            <h1 class="mb-0 text-primary text-uppercase"><i class="fa fa-cut me-3"></i>Barbershop Brother</h1>
+            <h1 class="mb-0 text-primary text-uppercase"><i class="fa fa-cut me-3"></i>Brother Scissors Barber</h1>
         </a>
         <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
             <span class="navbar-toggler-icon"></span>
@@ -57,7 +59,15 @@
                 <a href="#about" class="nav-item nav-link">Tentang Kami</a>
                 <a href="#services" class="nav-item nav-link">Layanan</a>
             </div>
-            <a href="{{ route('login') }}" class="btn btn-primary rounded-0 py-2 px-lg-4 d-none d-lg-block">Login<i class="fa fa-arrow-right ms-3"></i></a>
+            @auth
+            <form action="{{ route('logout') }}" method="POST" class="d-inline">
+                @csrf
+                <button type="submit" class="btn btn-danger rounded-0 py-2 px-lg-4 d-none d-lg-block">Logout <i class="fa fa-sign-out-alt ms-3"></i></button>
+            </form>
+        @else
+            <a href="{{ route('register') }}" class="btn btn-success rounded-0 py-2 px-lg-4 d-none d-lg-block me-2">Register <i class="fa fa-user-plus ms-3"></i></a>
+            <a href="{{ route('login') }}" class="btn btn-primary rounded-0 py-2 px-lg-4 d-none d-lg-block">Login <i class="fa fa-arrow-right ms-3"></i></a>
+        @endauth
         </div>
     </nav>
     <!-- Navbar End -->
@@ -146,63 +156,75 @@
             <div class="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 600px;">
                 <div class="bg-secondary p-5">
                     <h1 class="text-uppercase mb-4">Dapatkan reservasi Anda sekarang!</h1>
-    
-                    <form method="POST" action="{{ route('services.index') }}">
-                        @csrf
-                        <div class="row g-3">
-                            <!-- User ID (Hidden, you might want to dynamically fill it) -->
-                            <div class="col-12">
-                                <input type="hidden" name="user_id" value="1"> <!-- Or dynamically fill this value -->
-                            </div>
-
-                            <!-- Name -->
-                            <div class="col-md-6">
-                                <div class="form-floating">
-                                    <input type="text" class="form-control bg-transparent" id="name" name="name" placeholder="Your Name" required>
-                                    <label for="name">Nama</label>
+            
+                    @auth
+                        <form method="POST" action="{{ route('reservations.store') }}">
+                            @csrf
+                            <div id="servicesContainer"></div> 
+                            <div class="row g-3">
+                                <!-- User ID (Hidden, diisi otomatis) -->
+                                <input type="hidden" name="user_id" value="{{ auth()->user()->id }}">
+            
+                                <!-- Name -->
+                                <div class="col-md-6">
+                                    <div class="form-floating">
+                                        <input type="text" class="form-control bg-transparent" id="name" name="name" placeholder="Your Name" required>
+                                        <label for="name">Nama</label>
+                                    </div>
+                                </div>
+            
+                                <!-- Phone -->
+                                <div class="col-md-6">
+                                    <div class="form-floating">
+                                        <input type="text" class="form-control bg-transparent" id="phone" name="phone" placeholder="Your Phone" required>
+                                        <label for="phone">Telepon</label>
+                                    </div>
+                                </div>
+            
+                                <!-- Date -->
+                                <div class="col-12">
+                                    <div class="form-floating">
+                                        <input type="date" class="form-control bg-transparent" id="date" name="date" placeholder="Date" required>
+                                        <label for="date">Tanggal</label>
+                                    </div>
+                                </div>
+            
+                                <!-- Services -->
+                                <div class="col-12">
+                                    <div class="form-floating">
+                                        <select class="form-select bg-transparent" id="services">
+                                            <option value="">Pilih layanan</option>
+                                            @foreach($services as $service)
+                                                <option value="{{ $service->id }}">{{ $service->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <button type="button" class="btn btn-success mt-2" id="addService">Tambah Layanan</button>
+                                </div>
+                                
+                                <!-- Daftar layanan yang dipilih -->
+                                <div class="col-12 mt-3">
+                                    <ul id="selectedServices" class="list-group"></ul>
+                                </div>
+                                
+                                <!-- Input Hidden untuk Submit -->
+                                <input type="hidden" name="services" id="servicesInput">
+                                
+                                <!-- Submit Button -->
+                                <div class="col-12">
+                                    <button class="btn btn-primary w-100 py-3" type="submit">
+                                    Kirim Pesan</button>
                                 </div>
                             </div>
-
-                            <!-- Phone -->
-                            <div class="col-md-6">
-                                <div class="form-floating">
-                                    <input type="text" class="form-control bg-transparent" id="phone" name="phone" placeholder="Your Phone" required>
-                                    <label for="phone">Telepon</label>
-                                </div>
-                            </div>
-
-                            <!-- Date -->
-                            <div class="col-12">
-                                <div class="form-floating">
-                                    <input type="date" class="form-control bg-transparent" id="date" name="date" placeholder="Date" required>
-                                    <label for="date">Tanggal</label>
-                                </div>
-                            </div>
-
-                            <!-- Services -->
-                            <div class="col-12">
-                                <div class="form-floating"> 
-                                    <select class="form-select bg-transparent" id="services" name="services[]" multiple required>
-                                    @php
-                                        $services = [ ];
-                                        
-                                    @endphp
-                                    @foreach($services as  $service)
-                                        <option value="{{ $service->id }}">{{ $service->name }}</option>
-                                    @endforeach
-                                    </select>
-                                    <label for="services">Services</label>
-                                </div>
-                            </div>
-                            <!-- Submit Button -->
-                            <div class="col-12">
-                                <button class="btn btn-primary w-100 py-3" type="submit">
-                                Kirim Pesan</button>
-                            </div>
-                        </div>
-                    </form>
+                        </form>
+                    @else
+                        <!-- Jika user belum login -->
+                        <p class="text-white mb-4">Silakan login terlebih dahulu untuk melakukan reservasi.</p>
+                        <a href="{{ route('login') }}" class="btn btn-primary py-2 px-4">Login</a>
+                    @endauth
                 </div>
             </div>
+            
             <div class="row g-4 text-center" id="services">
             <h1 class="text-uppercase">
             Layanan kami!</h1>
@@ -578,6 +600,75 @@
 
     <!-- Template Javascript -->
     <script src="{{ asset('hair-salon-html-template/js/main.js') }}"></script>
+   <script>
+document.addEventListener("DOMContentLoaded", function () {
+    let selectedServices = [];
+    const servicesDropdown = document.getElementById("services");
+    const addServiceBtn = document.getElementById("addService");
+    const selectedServicesList = document.getElementById("selectedServices");
+    const servicesInput = document.getElementById("servicesInput");
+
+    addServiceBtn.addEventListener("click", function () {
+        const selectedServiceId = servicesDropdown.value;
+        const selectedServiceName = servicesDropdown.options[servicesDropdown.selectedIndex].text;
+
+        if (selectedServiceId && !selectedServices.includes(selectedServiceId)) {
+            selectedServices.push(selectedServiceId);
+            updateServicesInput(); // Perbarui input hidden
+
+            // Tambah ke daftar tampilan
+            const li = document.createElement("li");
+            li.className = "list-group-item d-flex justify-content-between align-items-center";
+            li.innerHTML = `
+                ${selectedServiceName}
+                <button type="button" class="btn btn-danger btn-sm remove-service" data-id="${selectedServiceId}">Hapus</button>
+            `;
+            selectedServicesList.appendChild(li);
+        }
+    });
+
+    selectedServicesList.addEventListener("click", function (e) {
+        if (e.target.classList.contains("remove-service")) {
+            const serviceId = e.target.getAttribute("data-id");
+
+            // Hapus dari array
+            selectedServices = selectedServices.filter(id => id !== serviceId);
+            updateServicesInput(); // Perbarui input hidden
+
+            // Hapus dari tampilan
+            e.target.parentElement.remove();
+        }
+    });
+
+    function updateServicesInput() {
+        servicesInput.value = JSON.stringify(selectedServices); // Simpan sebagai JSON
+        console.log("Updated servicesInput:", servicesInput.value); // Debugging
+    }
+});
+</script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    @if (session('success'))
+        Swal.fire({
+            title: "Berhasil!",
+            text: "{{ session('success') }}",
+            icon: "success",
+            confirmButtonText: "OK"
+        });
+    @endif
+
+    @if (session('error'))
+        Swal.fire({
+            title: "Error!",
+            text: "{{ session('error') }}",
+            icon: "error",
+            confirmButtonText: "OK"
+        });
+    @endif
+});
+</script>
+    
 </body>
 
 </html>

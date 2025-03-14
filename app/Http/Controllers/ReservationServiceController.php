@@ -20,7 +20,8 @@ class ReservationServiceController extends Controller
      */
     public function create()
     {
-        //
+        $services = Service::all();
+        return view('index', compact('services'));
     }
 
     /**
