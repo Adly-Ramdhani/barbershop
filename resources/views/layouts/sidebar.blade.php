@@ -63,6 +63,13 @@
           </a>
         </li> 
         <li class="nav-item">
+          <a href="{{ route('admin-reservations.index') }}">
+            <i class="fas fa-file"></i>
+            <p>Documentation</p>
+            <span class="badge badge-secondary">1</span>
+          </a>
+        </li>
+        <li class="nav-item">
           <a data-bs-toggle="collapse" href="#base">
             <i class="fas fa-layer-group"></i>
             <p>Base</p>
@@ -202,13 +209,6 @@
             <i class="fas fa-desktop"></i>
             <p>Widgets</p>
             <span class="badge badge-success">4</span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a href="../../documentation/index.html">
-            <i class="fas fa-file"></i>
-            <p>Documentation</p>
-            <span class="badge badge-secondary">1</span>
           </a>
         </li>
         <li class="nav-item">

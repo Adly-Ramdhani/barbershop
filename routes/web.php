@@ -15,7 +15,7 @@ use App\Http\Controllers\ReservationController;
 Route::get('/', function () {
     $services = Service::all(); // Ambil semua layanan dari database
     return view('index', compact('services'));
-});
+})->name('index');
 
 
 Auth::routes();
@@ -28,6 +28,10 @@ Route::middleware(['auth', 'is_user'])->group(function () {
 });
 
 Route::middleware(['auth', 'is_admin'])->group(function () {
+    Route::get('admin-reservations', [ReservationController::class, 'index'])->name('admin-reservations.index');
+    Route::get('admin-reservations/{id}', [ReservationController::class, 'show'])->name('admin-reservations.show');
+    Route::patch('admin-reservations/approve/{id}', [ReservationController::class, 'approve'])->name('admin-reservations.approve');
+    Route::patch('admin-reservations/reject/{id}', [ReservationController::class, 'reject'])->name('admin-reservations.reject');
     Route::get('/home', [HomeController::class, 'index'])->name('home');
     Route::get('/admin', [AdminController::class, 'index'])->name('admin');
     Route::resource('products', ProductController::class);
