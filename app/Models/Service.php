@@ -6,13 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 
-class Services extends Model
+class Service extends Model
 {    
     use SoftDeletes; // Tambahkan ini untuk mendukung Soft Delete
 
     protected $table = 'services';
 
-    protected $fillable = [ // Gantilah $guarded dengan $fillable
+    protected $fillable = [ 
         'name',
         'description',
     ];

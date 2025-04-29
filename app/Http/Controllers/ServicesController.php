@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Services;
+use App\Models\Service;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -15,14 +15,13 @@ class ServicesController extends Controller
     public function index()
     {
 
-        $services = Services::all();
-        // dd($services); 
+        $services = Service::all();
         return view('services.index', compact('services'));
     }
 
     public function create()
     {
-        $services = Services::all();
+        $services = Service::all();
         return view('index', compact('services'));
     }
 
@@ -36,7 +35,7 @@ class ServicesController extends Controller
             'description' => 'required',
         ]);
 
-        Services::create($validated);
+        Service::create($validated);
 
         return to_route('services.index');
     }
@@ -45,7 +44,7 @@ class ServicesController extends Controller
     {
         try {
             // Cari data berdasarkan ID
-            $service = Services::findOrFail($id);
+            $service = Service::findOrFail($id);
 
             // Jika data ditemukan, tampilkan di view
             return view('services.show', compact('service'));
@@ -68,7 +67,7 @@ class ServicesController extends Controller
     // }
     public function edit($id)
     {
-        $service = Services::findOrFail($id); // Ambil data berdasarkan ID
+        $service = Service::findOrFail($id); // Ambil data berdasarkan ID
         return view('services.edit', compact('service'));
     }
 
@@ -76,7 +75,7 @@ class ServicesController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Services $service)
+    public function update(Request $request, Service $service)
     {
         try {
             $validated = $request->validate([
@@ -107,7 +106,7 @@ class ServicesController extends Controller
                 ->with('success', 'Services berhasil dihapus.');
         } catch (\Exception $e) {
             return to_route('services.index')
-                ->with('error', 'Gagal menghapus Services: ' . $e->getMessage());
+                ->with('error', 'Gagal menghapus Service: ' . $e->getMessage());
         }
     }
 }

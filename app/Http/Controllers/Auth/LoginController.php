@@ -28,7 +28,7 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/admin';
+    protected $redirectTo = '/';
 
     /**
      * Create a new controller instance.
@@ -55,7 +55,7 @@ class LoginController extends Controller
         $request->session()->invalidate(); // Invalidate the session
         $request->session()->regenerateToken(); // Regenerate CSRF token
 
-        return redirect('/home'); // Redirect ke halaman login
+        return redirect('/'); // Redirect ke halaman login
     }
 
      /**
@@ -72,6 +72,6 @@ class LoginController extends Controller
             return redirect('/admin'); // Redirect ke halaman admin jika role admin
         }
 
-        return redirect('/home'); // Redirect ke halaman user jika role user
+        return redirect('/'); // Redirect ke halaman user jika role user
     }
 }

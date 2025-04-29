@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Services;
 use auth;
+use Carbon\Carbon;
+use App\Models\Service;
 use App\Models\Reservation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -16,20 +17,30 @@ class ReservationController extends Controller
     public function index()
     {
         try {
-            $reservations = Reservation::with('services')->get();
-            return response()->json(['status' => 'success', 'data' => $reservations], 200);
+            $reservations = Reservation::all()->map(function ($reservation) {
+                $reservation->formatted_date = Carbon::parse($reservation->date)->format('d M Y');
+                return $reservation;
+            });
+    
+            return view('reservations.index', compact('reservations'));
         } catch (\Exception $e) {
             return response()->json(['status' => 'error', 'message' => $e->getMessage()], 500);
         }
     }
+
 
     /**
      * Show the form for creating a new resource.
      */         
     public function create()
     {
-        $services = Services::all(); // Ambil semua data services
-        return view('index', compact('services')); // Kirim data ke view
+        try {
+            $services = Service::all(); // Ambil semua layanan dari database
+
+            return view('index', compact('services'));
+        } catch (\Exception $e) {
+            return back()->with('error', 'Terjadi kesalahan saat mengambil data layanan.'.$e->getMessage());
+        }
     }
 
     /**
@@ -37,7 +48,24 @@ class ReservationController extends Controller
      */
     public function store(Request $request)
     {
+
+  
         try {
+            $services = $request->input('services');
+
+            // Jika dikirim sebagai string JSON, decode menjadi array
+            if (is_string($services)) {
+                $services = json_decode($services, true);
+            }
+
+            // Pastikan services adalah array
+            if (!is_array($services)) {
+                return response()->json(['status' => 'error', 'message' => 'Invalid services format'], 400);
+            }
+
+            // Gabungkan data services ke request agar validasi bisa membaca sebagai array
+            $request->merge(['services' => $services]);
+            
             $request->validate([
                 'name' => 'required|string|max:255',
                 'phone' => 'required|string|max:15',
@@ -56,7 +84,7 @@ class ReservationController extends Controller
             }
     
             $reservationData = $request->only(['name', 'phone', 'date']);
-            $reservationData['user_id'] = $userId;
+            $reservationData['user_id'] = $user->id;
             $reservationData['status'] = 'pending';
     
             $reservation = Reservation::create($reservationData);
@@ -64,10 +92,11 @@ class ReservationController extends Controller
             $reservation->services()->attach($request->services);
     
             DB::commit();
-            return response()->json(['status' => 'success', 'data' => $reservation->load('services')], 201);
+
+            return redirect()->route('home')->with('success', 'Reservasi berhasil dibuat.');
         } catch (\Exception $e) {
             DB::rollBack();
-            return response()->json(['status' => 'error', 'message' => $e->getMessage()], 500);
+            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
         }
     }
     
@@ -79,13 +108,15 @@ class ReservationController extends Controller
     public function show($id)
     {
         try {
-            $reservation = Reservation::with('services')->find($id);
-            if (!$reservation) {
-                return response()->json(['status' => 'error', 'message' => 'Reservation not found'], 404);
+            if ($id) {
+                $reservations = Reservation::where('id', $id)->with('services')->get();
+            } else {
+                $reservations = Reservation::with('services')->get();
             }
-            return response()->json(['status' => 'success', 'data' => $reservation ], 201);
+    
+            return view('reservations.index', compact('reservations'));
         } catch (\Exception $e) {
-            return response()->json(['status' => 'error', 'message' => $e->getMessage()], 500);
+            return back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
         }
     }
     /**
@@ -153,6 +184,32 @@ class ReservationController extends Controller
             return response()->json(['status' => 'success', 'message' => 'Reservation deleted']);
         } catch (\Exception $e) {
             return response()->json(['status' => 'error', 'message' => $e->getMessage()], 500);
+        }
+    }
+
+    public function approve($id)
+    {
+        try {
+            $reservation = Reservation::findOrFail($id);
+            $reservation->status = 'confirmed';
+            $reservation->save();
+
+            return redirect()->back()->with('success', 'Reservasi berhasil disetujui.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
+    }
+
+    public function reject($id)
+    {
+        try {
+            $reservation = Reservation::findOrFail($id);
+            $reservation->status = 'cancelled';
+            $reservation->save();
+
+            return redirect()->back()->with('success', 'Reservasi berhasil ditolak.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
         }
     }
 }
