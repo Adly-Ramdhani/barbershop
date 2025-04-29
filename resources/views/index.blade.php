@@ -32,6 +32,52 @@
     <link href="{{ asset('hair-salon-html-template/css/style.css') }}" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+    <style>
+    .product-card {
+    background-color: #191c24;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 8px 30px rgba(108, 114, 147, 0.5);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    }
+
+    .product-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 35px rgba(108, 114, 147, 0.8);
+    }
+
+    .product-img {
+    width: 100%;
+    height: 220px;
+    object-fit: contain;
+    background-color: white;
+    padding: 12px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .product-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #ffffff;
+    }
+
+    .price {
+    color: #d62828;
+    font-weight: bold;
+    }
+
+    .product-description {
+    font-size: 0.95rem;
+    color: #e0e0e0;
+    }
+
+
+ </style>
+
 </head>
 
 
@@ -189,8 +235,8 @@
                                     </div>
                                 </div>
             
-                                <!-- Services -->
-                                <div class="col-12">
+                                 <!-- Services -->
+                                 <div class="col-12">
                                     <div class="form-floating">
                                         <select class="form-select bg-transparent" id="services">
                                             <option value="">Pilih layanan</option>
@@ -198,7 +244,7 @@
                                                 <option value="{{ $service->id }}">{{ $service->name }}</option>
                                             @endforeach
                                         </select>
-                                    </div>
+                                    </div> 
                                     <button type="button" class="btn btn-success mt-2" id="addService">Tambah Layanan</button>
                                 </div>
                                 
@@ -239,7 +285,7 @@
                             <p>Potongan rambut presisi yang disesuaikan dengan gaya dan kebutuhan Anda. Hasil yang rapi dan bergaya setiap saat.</p>
                             <!-- <span class="text-uppercase text-primary">From $15</span> -->
                         </div>
-                        <a class="btn btn-square" href=""><i class="fa fa-plus text-primary"></i></a>
+                        {{-- <a class="btn btn-square" href=""><i class="fa fa-plus text-primary"></i></a> --}}
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
@@ -253,7 +299,7 @@
                             <p>Perawatan jenggot profesional untuk tampilan yang rapi dan maskulin. Dapatkan bentuk yang sempurna dengan sentuhan ahli kami.</p>
                             <!-- <span class="text-uppercase text-primary">From $15</span> -->
                         </div>
-                        <a class="btn btn-square" href=""><i class="fa fa-plus text-primary"></i></a>
+                        {{-- <a class="btn btn-square" href=""><i class="fa fa-plus text-primary"></i></a> --}}
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.5s">
@@ -266,7 +312,7 @@
                             <p>Pengalaman bercukur klasik dengan pisau cukur dan handuk panas, memberikan kenyamanan dan hasil yang halus.</p>
                             <!-- <span class="text-uppercase text-primary">From $15</span> -->
                         </div>
-                        <a class="btn btn-square" href=""><i class="fa fa-plus text-primary"></i></a>
+                        {{-- <a class="btn btn-square" href=""><i class="fa fa-plus text-primary"></i></a> --}}
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
@@ -280,7 +326,7 @@
                             <p>Ubah rambut Anda dengan warna yang sesuai dengan kepribadian Anda. Kami menggunakan produk premium untuk hasil terbaik.</p>
                             <!-- <span class="text-uppercase text-primary">From $15</span> -->
                         </div>
-                        <a class="btn btn-square" href=""><i class="fa fa-plus text-primary"></i></a>
+                        {{-- <a class="btn btn-square" href=""><i class="fa fa-plus text-primary"></i></a> --}}
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
@@ -293,7 +339,7 @@
                             <p>Perawatan khusus untuk kumis, mulai dari pemangkasan hingga penataan, untuk menciptakan penampilan yang rapi dan bergaya.</p>
                             <!-- <span class="text-uppercase text-primary">From $15</span> -->
                         </div>
-                        <a class="btn btn-square" href=""><i class="fa fa-plus text-primary"></i></a>
+                        {{-- <a class="btn btn-square" href=""><i class="fa fa-plus text-primary"></i></a> --}}
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.5s">
@@ -307,7 +353,7 @@
                             <p>Gaya rambut berlapis modern dan segar, dirancang untuk menambah dimensi dan volume pada rambut Anda.</p>
                             <!-- <span class="text-uppercase text-primary">From $15</span> -->
                         </div>
-                        <a class="btn btn-square" href=""><i class="fa fa-plus text-primary"></i></a>
+                        {{-- <a class="btn btn-square" href=""><i class="fa fa-plus text-primary"></i></a> --}}
                     </div>
                 </div>
             </div>
@@ -317,100 +363,134 @@
 
     <!-- Price Start -->
     <div class="container-xxl py-5">
-    <div class="container">
-        <div class="row g-4">
-            <!-- Bagian Pertama (Working Hours) -->
-            <div class="col-lg-6 d-flex flex-column">
-                <div class="wow fadeIn" data-wow-delay="0.1s">
-                    <div class="h-100">
-                    </div>
-                </div>
-                <div class="wow fadeIn mt-4" data-wow-delay="0.5s">
-                    <div class="bg-secondary h-100 d-flex flex-column justify-content-center p-5">
-                        <p class="d-inline-flex bg-dark text-primary py-1 px-4 me-auto">Jam Kerja</p>
-                        <h1 class="text-uppercase mb-4">Tukang Cukur Profesional Menunggu Anda</h1>
-                        <div>
-                            <div class="d-flex justify-content-between border-bottom py-2">
-                                <h6 class="text-uppercase mb-0">Senin</h6>
-                                <span class="text-uppercase">Pukul 09.00 - 20.00</span>
-                            </div>
-                            <div class="d-flex justify-content-between border-bottom py-2">
-                                <h6 class="text-uppercase mb-0">Selasa</h6>
-                                <span class="text-uppercase">Pukul 09.00 - 20.00</span>
-                            </div>
-                            <div class="d-flex justify-content-between border-bottom py-2">
-                                <h6 class="text-uppercase mb-0">Rabu</h6>
-                                <span class="text-uppercase">Pukul 09.00 - 20.00</span>
-                            </div>
-                            <div class="d-flex justify-content-between border-bottom py-2">
-                                <h6 class="text-uppercase mb-0">Kamis</h6>
-                                <span class="text-uppercase">Pukul 09.00 - 20.00</span>
-                            </div>
-                            <div class="d-flex justify-content-between border-bottom py-2">
-                                <h6 class="text-uppercase mb-0">Jumat</h6>
-                                <span class="text-uppercase">Pukul 09.00 - 20.00</span>
-                            </div>
-                            <div class="d-flex justify-content-between py-2">
-                                <h6 class="text-uppercase mb-0">Sabtu</h6>
-                                <span class="text-uppercase">Pukul 09.00 - 20.00</span>
-                            </div>
-                            <div class="d-flex justify-content-between border-bottom py-2">
-                                <h6 class="text-uppercase mb-0">Minggu</h6>
-                                <span class="text-uppercase">Pukul 09.00 - 20.00</span>
-                            </div>
-                            <h6 class="text-uppercase mb-0 text-primary text-center">Hari Besar (Tutup)</h6>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Bagian Kedua (Price & Plan) -->
-            <div class="col-lg-6 d-flex flex-column">
-                <div class="wow fadeIn" data-wow-delay="0.1s">
-                    <div class="bg-secondary h-100 d-flex flex-column justify-content-center p-5">
-                        <p class="d-inline-flex bg-dark text-primary py-1 px-4 me-auto">Harga & Paket</p>
-                        <h1 class="text-uppercase mb-4">Lihat Layanan dan Harga Pangkas Rambut Kami</h1>
-                        <div>
-                            <div class="d-flex justify-content-between border-bottom py-2">
-                                <h6 class="text-uppercase mb-0">Dewasa</h6>
-                                <span class="text-uppercase text-primary">Rp. 30.000</span>
-                            </div>
-                            <div class="d-flex justify-content-between border-bottom py-2">
-                                <h6 class="text-uppercase mb-0">Anak-anak</h6>
-                                <span class="text-uppercase text-primary">Rp. 25.000</span>
-                            </div>
-                            <div class="d-flex justify-content-between border-bottom py-2">
-                                <h6 class="text-uppercase mb-0">Cuci rambut</h6>
-                                <span class="text-uppercase text-primary">Rp. 10.000</span>
-                            </div>
-                            <div class="d-flex justify-content-between border-bottom py-2">
-                                <h6 class="text-uppercase mb-0">Creambath</h6>
-                                <span class="text-uppercase text-primary">Rp. 40.000</span>
-                            </div>
-                            <div class="d-flex justify-content-between border-bottom py-2">
-                                <h6 class="text-uppercase mb-0">Dewasa + Cuci rambut</h6>
-                                <span class="text-uppercase text-primary">Rp. 35.000</span>
-                            </div>
-                            <div class="d-flex justify-content-between py-2">
-                                <h6 class="text-uppercase mb-0">Semir rambut + keramas</h6>
-                                <span class="text-uppercase text-primary">Rp. 60.000</span>
-                            </div>
-                            <div class="d-flex justify-content-between py-2">
-                                <h6 class="text-uppercase mb-0">Cat rambut + potong rambut</h6>
-                                <span class="text-uppercase text-primary">Rp. 80.000</span>
+        <div class="container">
+            <div class="row g-4 align-items-stretch">
+                <!-- Bagian Pertama (Working Hours) -->
+                <div class="col-lg-6 d-flex flex-column h-100">
+                    <div class="wow fadeIn" data-wow-delay="0.1s">
+                        <div class="bg-secondary h-100 d-flex flex-column justify-content-center p-5">
+                            <p class="d-inline-flex bg-dark text-primary py-1 px-4 me-auto">Jam Kerja</p>
+                            <h1 class="text-uppercase mb-4">Tukang Cukur Profesional Menunggu Anda</h1>
+                            <div>
+                                <div class="d-flex justify-content-between border-bottom py-2">
+                                    <h6 class="text-uppercase mb-0">Senin</h6>
+                                    <span class="text-uppercase">Pukul 09.00 - 20.00</span>
+                                </div>
+                                <div class="d-flex justify-content-between border-bottom py-2">
+                                    <h6 class="text-uppercase mb-0">Selasa</h6>
+                                    <span class="text-uppercase">Pukul 09.00 - 20.00</span>
+                                </div>
+                                <div class="d-flex justify-content-between border-bottom py-2">
+                                    <h6 class="text-uppercase mb-0">Rabu</h6>
+                                    <span class="text-uppercase">Pukul 09.00 - 20.00</span>
+                                </div>
+                                <div class="d-flex justify-content-between border-bottom py-2">
+                                    <h6 class="text-uppercase mb-0">Kamis</h6>
+                                    <span class="text-uppercase">Pukul 09.00 - 20.00</span>
+                                </div>
+                                <div class="d-flex justify-content-between border-bottom py-2">
+                                    <h6 class="text-uppercase mb-0">Jumat</h6>
+                                    <span class="text-uppercase">Pukul 09.00 - 20.00</span>
+                                </div>
+                                <div class="d-flex justify-content-between py-2">
+                                    <h6 class="text-uppercase mb-0">Sabtu</h6>
+                                    <span class="text-uppercase">Pukul 09.00 - 20.00</span>
+                                </div>
+                                <div class="d-flex justify-content-between border-bottom py-2">
+                                    <h6 class="text-uppercase mb-0">Minggu</h6>
+                                    <span class="text-uppercase">Pukul 09.00 - 20.00</span>
+                                </div>
+                                <h6 class="text-uppercase mb-0 text-primary text-center mt-3">Hari Besar (Tutup)</h6>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="wow fadeIn mt-4" data-wow-delay="0.5s">
-                    <div class="h-100">
+    
+                <!-- Bagian Kedua (Price & Plan) -->
+                <div class="col-lg-6 d-flex flex-column h-100">
+                    <div class="wow fadeIn" data-wow-delay="0.1s">
+                        <div class="bg-secondary h-100 d-flex flex-column justify-content-center p-5">
+                            <p class="d-inline-flex bg-dark text-primary py-1 px-4 me-auto">Harga & Paket</p>
+                            <h1 class="text-uppercase mb-4">Lihat Layanan dan Harga Pangkas Rambut Kami</h1>
+                            <div>
+                                <div class="d-flex justify-content-between border-bottom py-2">
+                                    <h6 class="text-uppercase mb-0">Dewasa</h6>
+                                    <span class="text-uppercase text-primary">Rp. 30.000</span>
+                                </div>
+                                <div class="d-flex justify-content-between border-bottom py-2">
+                                    <h6 class="text-uppercase mb-0">Anak-anak</h6>
+                                    <span class="text-uppercase text-primary">Rp. 25.000</span>
+                                </div>
+                                <div class="d-flex justify-content-between border-bottom py-2">
+                                    <h6 class="text-uppercase mb-0">Cuci rambut</h6>
+                                    <span class="text-uppercase text-primary">Rp. 10.000</span>
+                                </div>
+                                <div class="d-flex justify-content-between border-bottom py-2">
+                                    <h6 class="text-uppercase mb-0">Creambath</h6>
+                                    <span class="text-uppercase text-primary">Rp. 40.000</span>
+                                </div>
+                                <div class="d-flex justify-content-between border-bottom py-2">
+                                    <h6 class="text-uppercase mb-0">Dewasa + Cuci rambut</h6>
+                                    <span class="text-uppercase text-primary">Rp. 35.000</span>
+                                </div>
+                                <div class="d-flex justify-content-between py-2">
+                                    <h6 class="text-uppercase mb-0">Semir rambut + keramas</h6>
+                                    <span class="text-uppercase text-primary">Rp. 60.000</span>
+                                </div>
+                                <div class="d-flex justify-content-between py-2">
+                                    <h6 class="text-uppercase mb-0">Cat rambut + potong rambut</h6>
+                                    <span class="text-uppercase text-primary">Rp. 80.000</span>
+                                </div>
+                            </div>
+                            <div class="text-center text-muted small mt-3">*Harga dapat berubah sewaktu-waktu</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
+    
     <!-- Price End -->
+
+    {{-- card start --}}
+    <div class="container py-5">
+        <h1 class="text-center mb-5 section-heading">PRODUK</h1>
+        <div class="row g-4">
+          @forelse($products as $product)
+          <div class="col-md-4">
+            <div class="product-card text-white d-flex flex-column h-100">
+              <!-- Menampilkan gambar pertama dari produk -->
+              @if ($product->images->isNotEmpty())
+                    @foreach ($product->images as $image)
+                    <img src="{{ asset( $image->image_path) }}" 
+                    alt="{{ $product->name }}" 
+                    class="product-img">
+                    @endforeach
+                @endif
+
+      
+              <div class="p-3 d-flex flex-column gap-2 h-100">
+                <div class="product-title">{{ strtoupper($product->name) }}</div>
+                <div class="price">Rp {{ number_format($product->price, 0, ',', '.') }}</div>
+                <div class="product-description">{{ strtolower($product->description) }}</div>
+                {{-- <a href="{{ route('products.show', $product->id) }}" class="btn btn-detail mt-auto">Lihat Detail</a> --}}
+              </div>
+            </div>
+          </div>
+          @empty
+          <div class="col-12 text-center text-muted">Belum ada produk.</div>
+          @endforelse
+        </div>
+      </div>
+      
+
+  
+
+    
+      
+
+    {{-- Card End --}}
 
 
     <!-- Team Start -->
@@ -491,7 +571,7 @@
     <!-- Team End -->
 
     <!-- Testimonial Start -->
-    <div class="container-xxl py-5">
+    {{-- <div class="container-xxl py-5">
         <div class="container">
             <div class="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 600px;">
                 <p class="d-inline-block bg-secondary text-primary py-1 px-4">
@@ -516,7 +596,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
     <!-- Testimonial End -->
 
 

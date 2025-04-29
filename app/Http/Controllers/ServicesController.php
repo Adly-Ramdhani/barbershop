@@ -16,7 +16,6 @@ class ServicesController extends Controller
     {
 
         $services = Service::all();
-        dd($services); 
         return view('services.index', compact('services'));
     }
 

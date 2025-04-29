@@ -92,7 +92,8 @@ class ReservationController extends Controller
             $reservation->services()->attach($request->services);
     
             DB::commit();
-            return redirect()->route('index')->with('success', 'Reservasi berhasil dibuat.');
+
+            return redirect()->route('home')->with('success', 'Reservasi berhasil dibuat.');
         } catch (\Exception $e) {
             DB::rollBack();
             return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
